@@ -1,3 +1,3 @@
 # Inventory Management System
 
-An app designed to manage inventory built using Java, JavaFX, and Scenebuilder
+An inventory management app created using Java, JavaFX, and Scenebuilder
