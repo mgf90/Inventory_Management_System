@@ -1,5 +1,6 @@
 package Controller;
 
+import Model.InHouse;
 import Model.Inventory;
 import Model.Part;
 import Model.Product;
@@ -36,7 +37,7 @@ public class AddProduct implements Initializable {
     private TextField addProductPriceTxt;
 
     @FXML
-    private Label addProductMaxTxt;
+    private TextField addProductMaxTxt;
 
     @FXML
     private TextField addProductMinTxt;
@@ -117,7 +118,21 @@ public class AddProduct implements Initializable {
     }
 
     @FXML
-    void onActionSavePart(ActionEvent event) {
+    void onActionSaveProduct(ActionEvent event) throws IOException {
+
+        int id = Product.getProductID();
+        String name = addProductNameTxt.getText();
+        double price = Double.parseDouble(addProductPriceTxt.getText());
+        int inv = Integer.parseInt(addProductInvTxt.getText());
+        int min = Integer.parseInt(addProductMinTxt.getText());
+        int max = Integer.parseInt(addProductMaxTxt.getText());
+
+        Inventory.addProduct(new Product(id, name, price, inv, min, max));
+
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
 
     }
 

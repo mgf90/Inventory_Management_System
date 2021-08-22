@@ -6,6 +6,7 @@ import javafx.collections.ObservableList;
 public class Product {
 
     private ObservableList<Part> associatedParts = FXCollections.observableArrayList();
+    public static int productID = 3;
 
     private int id;
     private String name;
@@ -93,6 +94,14 @@ public class Product {
 
     public void setMax(int max) {
         this.max = max;
+    }
+
+    public static int getProductID() {
+        return productID += 2;
+    }
+
+    public static void setProductID(int productID) {
+        Product.productID = productID;
     }
 
     public void addAssociatedPart(Part part) {

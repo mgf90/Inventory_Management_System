@@ -4,7 +4,7 @@ package Model;
 
 public class InHouse extends Part {
 
-    public static int partID = 4;
+    public static int partID = 6;
     private int machineID;
 
     public InHouse(int id, String name, double price, int stock, int min, int max, int machineID) {
@@ -25,7 +25,7 @@ public class InHouse extends Part {
     }
 
     public static int getPartID() {
-        return partID++;
+        return partID+= 2;
     }
 
     public static void setPartID(int partID) {

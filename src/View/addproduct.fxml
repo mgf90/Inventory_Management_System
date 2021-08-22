@@ -50,7 +50,7 @@
                         <Label text="Inv" GridPane.rowIndex="2" />
                         <Label text="Price" GridPane.rowIndex="3" />
                         <Label text="Max" GridPane.rowIndex="4" />
-                        <TextField maxWidth="50.0" prefHeight="25.0" prefWidth="73.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                        <TextField fx:id="addProductMaxTxt" maxWidth="50.0" prefHeight="25.0" prefWidth="73.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <GridPane.margin>
                               <Insets />
                            </GridPane.margin>
@@ -59,16 +59,16 @@
                         <TextField fx:id="addProductNameTxt" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="addProductInvTxt" maxWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="addProductPriceTxt" maxWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                        <Label fx:id="addProductMaxTxt" text="Min" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                           <padding>
-                              <Insets left="100.0" />
-                           </padding>
-                        </Label>
                         <TextField fx:id="addProductMinTxt" maxWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                            <GridPane.margin>
                               <Insets left="140.0" />
                            </GridPane.margin>
                         </TextField>
+                        <Label alignment="CENTER_RIGHT" prefHeight="17.0" prefWidth="71.0" text="Min" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="60.0" />
+                           </GridPane.margin>
+                        </Label>
                      </children>
                   </GridPane>
                </children>
@@ -121,7 +121,7 @@
                   </Button>
                   <HBox prefHeight="100.0" prefWidth="200.0">
                      <children>
-                        <Button mnemonicParsing="false" onAction="#onActionSavePart" text="Save">
+                        <Button mnemonicParsing="false" onAction="#onActionSaveProduct" text="Save">
                            <HBox.margin>
                               <Insets left="325.0" top="30.0" />
                            </HBox.margin>
