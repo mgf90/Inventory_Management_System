@@ -140,6 +140,9 @@ public class MainPageController implements Initializable {
     @FXML
     void onActionModifyProduct(ActionEvent event) throws IOException {
 
+        modProduct = productsTableView.getSelectionModel().getSelectedItem();
+        modProductIndex = Inventory.getAllProducts().indexOf(modProduct);
+
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/modifyproduct.fxml"));
         stage.setScene(new Scene(scene));

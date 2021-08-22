@@ -50,7 +50,7 @@
                                 <Label text="Inv" GridPane.rowIndex="2" />
                                 <Label text="Price" GridPane.rowIndex="3" />
                                 <Label text="Max" GridPane.rowIndex="4" />
-                                <TextField maxWidth="50.0" prefHeight="25.0" prefWidth="73.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                                <TextField fx:id="modifyProductMaxTxt" maxWidth="50.0" prefHeight="25.0" prefWidth="73.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                     <GridPane.margin>
                                         <Insets />
                                     </GridPane.margin>
@@ -59,10 +59,10 @@
                                 <TextField fx:id="modifyProductNameTxt" maxWidth="-Infinity" prefWidth="200.0" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                                 <TextField fx:id="modifyProductInvTxt" maxWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                                 <TextField fx:id="modifyProductPriceTxt" maxWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="3" />
-                                <Label fx:id="modifyProductMaxTxt" text="Min" GridPane.columnIndex="1" GridPane.rowIndex="4">
-                                    <padding>
-                                        <Insets left="100.0" />
-                                    </padding>
+                                <Label alignment="CENTER_RIGHT" text="Min" GridPane.columnIndex="1" GridPane.rowIndex="4">
+                           <GridPane.margin>
+                              <Insets left="100.0" />
+                           </GridPane.margin>
                                 </Label>
                                 <TextField fx:id="modifyProductMinTxt" maxWidth="-Infinity" prefWidth="50.0" GridPane.columnIndex="1" GridPane.rowIndex="4">
                                     <GridPane.margin>

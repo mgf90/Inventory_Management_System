@@ -1,8 +1,11 @@
 package Controller;
 
+import Model.Inventory;
 import Model.Part;
+import Model.Product;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
+import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
@@ -10,11 +13,15 @@ import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
 import java.io.IOException;
+import java.net.URL;
+import java.util.ResourceBundle;
 
-public class ModifyProduct {
+public class ModifyProduct implements Initializable {
 
     Stage stage;
     Parent scene;
+    int productIndex = MainPageController.productModIndex();
+    private int productID;
 
     @FXML
     private TextField modifyProductIDTxt;
@@ -29,7 +36,7 @@ public class ModifyProduct {
     private TextField modifyProductPriceTxt;
 
     @FXML
-    private Label modifyProductMaxTxt;
+    private TextField modifyProductMaxTxt;
 
     @FXML
     private TextField modifyProductMinTxt;
@@ -92,4 +99,17 @@ public class ModifyProduct {
 
     }
 
+    @Override
+    public void initialize(URL url, ResourceBundle resourceBundle) {
+
+        Product product = Inventory.getAllProducts().get(productIndex);
+        productID = Inventory.getAllProducts().get(productIndex).getId();
+        modifyProductIDTxt.setText(String.valueOf(productID));
+        modifyProductNameTxt.setText(product.getName());
+        modifyProductInvTxt.setText(String.valueOf(product.getStock()));
+        modifyProductPriceTxt.setText(String.valueOf(product.getPrice()));
+        modifyProductMinTxt.setText(String.valueOf(product.getMin()));
+        modifyProductMaxTxt.setText(String.valueOf(product.getMax()));
+
+    }
 }
