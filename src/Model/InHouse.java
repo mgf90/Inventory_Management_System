@@ -4,7 +4,7 @@ package Model;
 
 public class InHouse extends Part {
 
-    public static int partID = 3;
+    public static int partID = 4;
     private int machineID;
 
     public InHouse(int id, String name, double price, int stock, int min, int max, int machineID) {
