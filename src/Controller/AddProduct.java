@@ -4,6 +4,7 @@ import Model.InHouse;
 import Model.Inventory;
 import Model.Part;
 import Model.Product;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -23,6 +24,7 @@ public class AddProduct implements Initializable {
 
     Stage stage;
     Parent scene;
+    private ObservableList<Part> assocParts = FXCollections.observableArrayList();
 
     @FXML
     private TextField addProductIDTxt;
@@ -100,6 +102,9 @@ public class AddProduct implements Initializable {
     @FXML
     void onActionAddPart(ActionEvent event) {
 
+        Part p = addProductAddTableView.getSelectionModel().getSelectedItem();
+        assocParts.add(p);
+
     }
 
     @FXML
@@ -114,6 +119,9 @@ public class AddProduct implements Initializable {
 
     @FXML
     void onActionRemovePart(ActionEvent event) {
+
+        Part delPart = addProductRemoveTableView.getSelectionModel().getSelectedItem();
+        assocParts.remove(delPart);
 
     }
 
@@ -147,6 +155,14 @@ public class AddProduct implements Initializable {
         addPartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         addInvLvlCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         addPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        addProductRemoveTableView.setItems(assocParts);
+
+        removePartIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        removePartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        removeInvLvlCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        removePriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+
     }
 
 }

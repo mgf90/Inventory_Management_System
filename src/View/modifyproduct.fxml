@@ -80,6 +80,11 @@
                                 <Insets left="300.0" top="50.0" />
                             </VBox.margin>
                         </TextField>
+                  <Button mnemonicParsing="false" onAction="#onSearchParts" text="Search">
+                     <VBox.margin>
+                        <Insets left="398.0" top="10.0" />
+                     </VBox.margin>
+                  </Button>
                         <TableView fx:id="modProductAddTableView" maxHeight="-Infinity" maxWidth="-Infinity" prefHeight="160.0" prefWidth="445.0">
                             <columns>
                                 <TableColumn fx:id="modifyProductAddPartIDCol" prefWidth="75.0" text="Part ID" />

@@ -1,6 +1,8 @@
 package Model;
 /** Supplied class Part.java */
 
+import javafx.collections.ObservableList;
+
 /**
  *
  * @author Gavin

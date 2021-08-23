@@ -3,6 +3,7 @@ package Controller;
 import Model.Inventory;
 import Model.Part;
 import Model.Product;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
@@ -10,6 +11,7 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
+import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
@@ -95,7 +97,45 @@ public class ModifyProduct implements Initializable {
     }
 
     @FXML
-    void onActionSavePart(ActionEvent event) {
+    void onActionSavePart(ActionEvent event) throws IOException {
+
+        String name = modifyProductNameTxt.getText();
+        int inv = Integer.parseInt(modifyProductInvTxt.getText());
+        double price = Double.parseDouble(modifyProductPriceTxt.getText());
+        int min = Integer.parseInt(modifyProductMinTxt.getText());
+        int max = Integer.parseInt(modifyProductMaxTxt.getText());
+
+        Product p = new Product(0,null,0,0,0,0);
+        p.setId(productID);
+        p.setName(name);
+        p.setStock(inv);
+        p.setPrice(price);
+        p.setMin(min);
+        p.setMax(max);
+        Inventory.updateProduct(productIndex, p);
+
+        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
+        stage.setScene(new Scene(scene));
+        stage.show();
+    }
+
+    @FXML
+    void onSearchParts(ActionEvent event) {
+
+        String s = modifyProductSearchTxt.getText();
+
+        ObservableList<Part> parts = Inventory.lookupPart(s);
+
+        if(parts.size() == 0) {
+            int id = Integer.parseInt(s);
+            Part p = Inventory.lookupPart(id);
+            if(p != null) {
+                parts.add(p);
+            }
+        }
+
+        modProductAddTableView.setItems(parts);
 
     }
 
@@ -110,6 +150,13 @@ public class ModifyProduct implements Initializable {
         modifyProductPriceTxt.setText(String.valueOf(product.getPrice()));
         modifyProductMinTxt.setText(String.valueOf(product.getMin()));
         modifyProductMaxTxt.setText(String.valueOf(product.getMax()));
+
+        modProductAddTableView.setItems(Inventory.getAllParts());
+
+        modifyProductAddPartIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        modifyProductAddPartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        modifyProductAddInvLvlCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        modifyProductAddPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
     }
 }
