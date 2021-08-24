@@ -25,6 +25,8 @@ public class AddProduct implements Initializable {
     Stage stage;
     Parent scene;
     private ObservableList<Part> assocParts = FXCollections.observableArrayList();
+    Product product = new Product(0, null, 0,0,0,100);
+
 
     @FXML
     private TextField addProductIDTxt;
@@ -103,7 +105,7 @@ public class AddProduct implements Initializable {
     void onActionAddPart(ActionEvent event) {
 
         Part p = addProductAddTableView.getSelectionModel().getSelectedItem();
-        assocParts.add(p);
+        product.addAssociatedPart(p);
 
     }
 
@@ -121,7 +123,7 @@ public class AddProduct implements Initializable {
     void onActionRemovePart(ActionEvent event) {
 
         Part delPart = addProductRemoveTableView.getSelectionModel().getSelectedItem();
-        assocParts.remove(delPart);
+        product.deleteAssociatedPart(delPart);
 
     }
 
@@ -135,7 +137,14 @@ public class AddProduct implements Initializable {
         int min = Integer.parseInt(addProductMinTxt.getText());
         int max = Integer.parseInt(addProductMaxTxt.getText());
 
-        Inventory.addProduct(new Product(id, name, price, inv, min, max));
+        product.setId(id);
+        product.setName(name);
+        product.setPrice(price);
+        product.setStock(inv);
+        product.setMin(min);
+        product.setMax(max);
+        Inventory.addProduct(product);
+
 
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
@@ -143,6 +152,7 @@ public class AddProduct implements Initializable {
         stage.show();
 
     }
+
 
     public void initialize(URL url, ResourceBundle rb) {
         /** RUNTIME ERROR non-static method Product.getAllAssociatedParts() cannot be referenced from a static context,
@@ -156,7 +166,8 @@ public class AddProduct implements Initializable {
         addInvLvlCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         addPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
-        addProductRemoveTableView.setItems(assocParts);
+
+        addProductRemoveTableView.setItems(product.getAllAssociatedParts());
 
         removePartIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         removePartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));

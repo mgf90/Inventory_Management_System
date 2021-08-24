@@ -38,7 +38,7 @@
                         <Label text="Price/Cost" GridPane.rowIndex="3" />
                         <Label text="Max" GridPane.rowIndex="4" />
                         <Label fx:id="changeText" text="Machine ID" GridPane.rowIndex="5" />
-                        <TextField fx:id="modifyPartIDTxt" GridPane.columnIndex="1" />
+                        <TextField fx:id="modifyPartIDTxt" editable="false" GridPane.columnIndex="1" />
                         <TextField fx:id="modifyPartNameTxt" GridPane.columnIndex="1" GridPane.rowIndex="1" />
                         <TextField fx:id="modifyPartInvTxt" GridPane.columnIndex="1" GridPane.rowIndex="2" />
                         <TextField fx:id="modifyPartPriceTxt" GridPane.columnIndex="1" GridPane.rowIndex="3" />

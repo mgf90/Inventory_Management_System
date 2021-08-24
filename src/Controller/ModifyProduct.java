@@ -79,6 +79,9 @@ public class ModifyProduct implements Initializable {
     @FXML
     void onActionAddPart(ActionEvent event) {
 
+        Part p = modProductAddTableView.getSelectionModel().getSelectedItem();
+        Product product = Inventory.getAllProducts().get(productIndex);
+        product.addAssociatedPart(p);
     }
 
     @FXML
@@ -94,6 +97,9 @@ public class ModifyProduct implements Initializable {
     @FXML
     void onActionRemovePart(ActionEvent event) {
 
+        Part delPart = modProductRemoveTableView.getSelectionModel().getSelectedItem();
+        Product product = Inventory.getAllProducts().get(productIndex);
+        product.deleteAssociatedPart(delPart);
     }
 
     @FXML
@@ -157,6 +163,13 @@ public class ModifyProduct implements Initializable {
         modifyProductAddPartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         modifyProductAddInvLvlCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         modifyProductAddPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
+
+        modProductRemoveTableView.setItems(product.getAllAssociatedParts());
+
+        modifyProductRemovePartIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
+        modifyProductRemovePartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
+        modifyProductRemoveInvLvlCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
+        modifyProductRemovePriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
     }
 }

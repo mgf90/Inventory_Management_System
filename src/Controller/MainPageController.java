@@ -141,6 +141,7 @@ public class MainPageController implements Initializable {
     void onActionModifyProduct(ActionEvent event) throws IOException {
 
         modProduct = productsTableView.getSelectionModel().getSelectedItem();
+        modProduct.getAllAssociatedParts();
         modProductIndex = Inventory.getAllProducts().indexOf(modProduct);
 
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();

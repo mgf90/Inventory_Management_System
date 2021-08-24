@@ -33,6 +33,11 @@ public class Main extends Application {
         Inventory.addProduct(product1);
         Inventory.addProduct(product2);
 
+        product1.addAssociatedPart(part2);
+        product1.addAssociatedPart(part3);
+        product2.addAssociatedPart(part2);
+        product2.addAssociatedPart(part1);
+
         launch(args);
     }
 }
