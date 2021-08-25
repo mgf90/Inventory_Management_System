@@ -96,22 +96,33 @@ public class Product {
         this.max = max;
     }
 
+    /** @return the product ID plus 2 */
+
     public static int getProductID() {
         return productID += 2;
     }
+
+    /** @param productID sets the product ID */
 
     public static void setProductID(int productID) {
         Product.productID = productID;
     }
 
+    /** @param part adds the part to associatedParts */
+
     public void addAssociatedPart(Part part) {
         associatedParts.add(part);
     }
+
+    /** @param selectedAssociatedPart removes the selected part
+     * @return true */
 
     public boolean deleteAssociatedPart(Part selectedAssociatedPart) {
         associatedParts.remove(selectedAssociatedPart);
         return true;
     }
+
+    /** @return the associated parts */
 
     public ObservableList<Part> getAllAssociatedParts() {
         return associatedParts;

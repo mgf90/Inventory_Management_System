@@ -82,6 +82,8 @@ public class AddProduct implements Initializable {
     @FXML
     private Button addProductSearchParts;
 
+    /** searches top table for parts */
+
     @FXML
     void onSearchParts(ActionEvent event) {
 
@@ -101,13 +103,17 @@ public class AddProduct implements Initializable {
 
     }
 
+    /** adds parts to the associated parts table */
+
     @FXML
     void onActionAddPart(ActionEvent event) {
 
         Part p = addProductAddTableView.getSelectionModel().getSelectedItem();
-        product.addAssociatedPart(p);
+        assocParts.add(p);
 
     }
+
+    /** cancels and goes back to the main menu */
 
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
@@ -119,13 +125,17 @@ public class AddProduct implements Initializable {
 
     }
 
+    /** removes parts from the associated parts table */
+
     @FXML
     void onActionRemovePart(ActionEvent event) {
 
         Part delPart = addProductRemoveTableView.getSelectionModel().getSelectedItem();
-        product.deleteAssociatedPart(delPart);
+        assocParts.remove(delPart);
 
     }
+
+    /** saves product and returns to the main menu */
 
     @FXML
     void onActionSaveProduct(ActionEvent event) throws IOException {
@@ -144,6 +154,9 @@ public class AddProduct implements Initializable {
         product.setMin(min);
         product.setMax(max);
         Inventory.addProduct(product);
+        for(Part p : assocParts) {
+            product.addAssociatedPart(p);
+        }
 
 
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
@@ -167,7 +180,7 @@ public class AddProduct implements Initializable {
         addPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
 
-        addProductRemoveTableView.setItems(product.getAllAssociatedParts());
+        addProductRemoveTableView.setItems(assocParts);
 
         removePartIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         removePartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));

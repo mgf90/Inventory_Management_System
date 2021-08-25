@@ -3,6 +3,7 @@ package Controller;
 import Model.Inventory;
 import Model.Part;
 import Model.Product;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
@@ -24,6 +25,8 @@ public class ModifyProduct implements Initializable {
     Parent scene;
     int productIndex = MainPageController.productModIndex();
     private int productID;
+    private ObservableList<Part> assocParts = FXCollections.observableArrayList();
+    private ObservableList<Part> assocPartsFinal;
 
     @FXML
     private TextField modifyProductIDTxt;
@@ -76,16 +79,21 @@ public class ModifyProduct implements Initializable {
     @FXML
     private TableColumn<Part, Double> modifyProductRemovePriceCol;
 
+    /** adds parts to the associated parts table */
+
     @FXML
     void onActionAddPart(ActionEvent event) {
 
         Part p = modProductAddTableView.getSelectionModel().getSelectedItem();
         Product product = Inventory.getAllProducts().get(productIndex);
-        product.addAssociatedPart(p);
+        assocParts.add(p);
     }
 
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
+
+
+        modProductRemoveTableView.setItems(assocPartsFinal);
 
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
@@ -99,7 +107,7 @@ public class ModifyProduct implements Initializable {
 
         Part delPart = modProductRemoveTableView.getSelectionModel().getSelectedItem();
         Product product = Inventory.getAllProducts().get(productIndex);
-        product.deleteAssociatedPart(delPart);
+        assocParts.remove(delPart);
     }
 
     @FXML
@@ -119,6 +127,11 @@ public class ModifyProduct implements Initializable {
         p.setMin(min);
         p.setMax(max);
         Inventory.updateProduct(productIndex, p);
+        for(Part a : assocParts) {
+            p.addAssociatedPart(a);
+        }
+        assocPartsFinal = assocParts;
+
 
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
@@ -165,11 +178,18 @@ public class ModifyProduct implements Initializable {
         modifyProductAddPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         modProductRemoveTableView.setItems(product.getAllAssociatedParts());
+        assocParts = product.getAllAssociatedParts();
 
         modifyProductRemovePartIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         modifyProductRemovePartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));
         modifyProductRemoveInvLvlCol.setCellValueFactory(new PropertyValueFactory<>("stock"));
         modifyProductRemovePriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
+        updateModProductRemoveTableView();
+
+    }
+
+    public void updateModProductRemoveTableView() {
+        modProductRemoveTableView.setItems(assocParts);
     }
 }

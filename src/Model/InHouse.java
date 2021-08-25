@@ -1,6 +1,6 @@
 package Model;
 
-/** This class creates In House Parts*/
+/** This class creates In House Parts */
 
 public class InHouse extends Part {
 
@@ -24,9 +24,13 @@ public class InHouse extends Part {
         this.machineID = machineID;
     }
 
+    /** @return the part ID plus 2 */
+
     public static int getPartID() {
         return partID+= 2;
     }
+
+    /** @param partID sets the part ID */
 
     public static void setPartID(int partID) {
         InHouse.partID = partID;
