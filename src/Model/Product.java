@@ -127,4 +127,8 @@ public class Product {
     public ObservableList<Part> getAllAssociatedParts() {
         return associatedParts;
     }
+
+    public void setAssociatedParts(ObservableList<Part> list) {
+        associatedParts.setAll(list);
+    }
 }

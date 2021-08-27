@@ -27,6 +27,7 @@ public class ModifyProduct implements Initializable {
     private int productID;
     private ObservableList<Part> assocParts = FXCollections.observableArrayList();
     private ObservableList<Part> assocPartsFinal;
+    Product product;
 
     @FXML
     private TextField modifyProductIDTxt;
@@ -85,7 +86,7 @@ public class ModifyProduct implements Initializable {
     void onActionAddPart(ActionEvent event) {
 
         Part p = modProductAddTableView.getSelectionModel().getSelectedItem();
-        Product product = Inventory.getAllProducts().get(productIndex);
+//        Product product = Inventory.getAllProducts().get(productIndex);
         assocParts.add(p);
     }
 
@@ -113,25 +114,24 @@ public class ModifyProduct implements Initializable {
     @FXML
     void onActionSavePart(ActionEvent event) throws IOException {
 
-        String name = modifyProductNameTxt.getText();
-        int inv = Integer.parseInt(modifyProductInvTxt.getText());
-        double price = Double.parseDouble(modifyProductPriceTxt.getText());
-        int min = Integer.parseInt(modifyProductMinTxt.getText());
-        int max = Integer.parseInt(modifyProductMaxTxt.getText());
+        try {
+            String name = modifyProductNameTxt.getText();
+            int inv = Integer.parseInt(modifyProductInvTxt.getText());
+            double price = Inventory.getPrice(modifyProductPriceTxt.getText());
+            int min = Integer.parseInt(modifyProductMinTxt.getText());
+            int max = Integer.parseInt(modifyProductMaxTxt.getText());
 
-        Product p = new Product(0,null,0,0,0,0);
-        p.setId(productID);
-        p.setName(name);
-        p.setStock(inv);
-        p.setPrice(price);
-        p.setMin(min);
-        p.setMax(max);
-        Inventory.updateProduct(productIndex, p);
-        for(Part a : assocParts) {
-            p.addAssociatedPart(a);
+            Product p = new Product(product.getId(),name,price,inv,min,max);
+            p.setAssociatedParts(assocParts);
+            Inventory.updateProduct(productIndex, p);
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+
+            alert.showAndWait();
         }
-        assocPartsFinal = assocParts;
-
 
         stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
@@ -161,7 +161,7 @@ public class ModifyProduct implements Initializable {
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
-        Product product = Inventory.getAllProducts().get(productIndex);
+        product = Inventory.getAllProducts().get(productIndex);
         productID = Inventory.getAllProducts().get(productIndex).getId();
         modifyProductIDTxt.setText(String.valueOf(productID));
         modifyProductNameTxt.setText(product.getName());
@@ -178,7 +178,7 @@ public class ModifyProduct implements Initializable {
         modifyProductAddPriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
         modProductRemoveTableView.setItems(product.getAllAssociatedParts());
-        assocParts = product.getAllAssociatedParts();
+        assocParts.setAll(product.getAllAssociatedParts());
 
         modifyProductRemovePartIDCol.setCellValueFactory(new PropertyValueFactory<>("id"));
         modifyProductRemovePartNameCol.setCellValueFactory(new PropertyValueFactory<>("name"));

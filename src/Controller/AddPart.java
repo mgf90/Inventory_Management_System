@@ -8,10 +8,7 @@ import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
@@ -69,41 +66,54 @@ public class AddPart {
     @FXML
     void onActionSavePart(ActionEvent event) throws IOException {
 
-        if (isInHouse) {
+        try {
 
-            int id = InHouse.getPartID();
-            String name = addPartNameTxt.getText();
-            int inv = Integer.parseInt(addPartInvTxt.getText());
-            double price = Double.parseDouble(addPartPriceTxt.getText());
-            int max = Integer.parseInt(addPartMaxTxt.getText());
-            int min = Integer.parseInt(addPartMinTxt.getText());
-            int machineID = Integer.parseInt(AddPartMachineIDTxt.getText());
+            if (isInHouse) {
 
-            Inventory.addPart(new InHouse(id, name, price, inv, min, max, machineID));
+                int id = InHouse.getPartID();
+                String name = addPartNameTxt.getText();
+                int inv = Integer.parseInt(addPartInvTxt.getText());
+                double price = Double.parseDouble(addPartPriceTxt.getText());
+                int max = Integer.parseInt(addPartMaxTxt.getText());
+                int min = Integer.parseInt(addPartMinTxt.getText());
+                int machineID = Integer.parseInt(AddPartMachineIDTxt.getText());
 
-            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-            scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
-            stage.setScene(new Scene(scene));
-            stage.show();
+                Inventory.addPart(new InHouse(id, name, price, inv, min, max, machineID));
 
+                stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.show();
+
+            }
+
+            if (!isInHouse) {
+                int id = InHouse.getPartID();
+                String name = addPartNameTxt.getText();
+                int inv = Integer.parseInt(addPartInvTxt.getText());
+                double price = Double.parseDouble(addPartPriceTxt.getText());
+                int max = Integer.parseInt(addPartMaxTxt.getText());
+                int min = Integer.parseInt(addPartMinTxt.getText());
+                String companyName = AddPartMachineIDTxt.getText();
+
+                Inventory.addPart(new Outsourced(id, name, price, inv, min, max, companyName));
+
+                stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+                scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
+                stage.setScene(new Scene(scene));
+                stage.show();
+            }
+
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText("Incorrect data entered");
+
+            alert.showAndWait();
         }
 
-        if (!isInHouse) {
-            int id = InHouse.getPartID();
-            String name = addPartNameTxt.getText();
-            int inv = Integer.parseInt(addPartInvTxt.getText());
-            double price = Double.parseDouble(addPartPriceTxt.getText());
-            int max = Integer.parseInt(addPartMaxTxt.getText());
-            int min = Integer.parseInt(addPartMinTxt.getText());
-            String companyName = AddPartMachineIDTxt.getText();
 
-            Inventory.addPart(new Outsourced(id, name, price, inv, min, max, companyName));
-
-            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-            scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
-            stage.setScene(new Scene(scene));
-            stage.show();
-        }
 
         }
 

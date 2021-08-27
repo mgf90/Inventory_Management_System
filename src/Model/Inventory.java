@@ -42,8 +42,6 @@ public class Inventory {
 
     public static Part lookupPart(int partID) {
 
-        ObservableList<Part> allParts = getAllParts();
-
         for(Part p : allParts) {
             if(p.getId() == partID) {
                 return p;
@@ -76,21 +74,19 @@ public class Inventory {
 
         ObservableList<Part> namedParts = FXCollections.observableArrayList();
 
-        ObservableList<Part> allParts = getAllParts();
-
-        ObservableList<Part> notFound = null;
-
         for(Part p : allParts) {
             if(p.getName().toUpperCase().contains(partName.toUpperCase())) {
                 namedParts.add(p);
             }
         }
 
-        if(namedParts.size() == 0) {
-            return notFound;
-        } else {
-            return namedParts;
-        }
+//        if(namedParts.size() == 0) {
+//            return notFound;
+//        } else {
+//            return namedParts;
+//        }
+
+        return namedParts;
     }
 
     /** @param productName looks up products using the name
@@ -137,5 +133,13 @@ public class Inventory {
 
     public static boolean deleteProduct(Product selectedProduct) {
         return true;
+    }
+
+    public static double getPrice(String value) throws NumberFormatException {
+        try {
+            return Double.parseDouble(value);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Price must be a decimal value");
+        }
     }
 }

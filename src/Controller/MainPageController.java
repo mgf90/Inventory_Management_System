@@ -11,15 +11,13 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.TableColumn;
-import javafx.scene.control.TableView;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.scene.control.cell.PropertyValueFactory;
 import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Locale;
 import java.util.ResourceBundle;
 
 public class MainPageController implements Initializable {
@@ -130,11 +128,10 @@ public class MainPageController implements Initializable {
         modPart = partsTableView.getSelectionModel().getSelectedItem();
         modPartIndex = Inventory.getAllParts().indexOf(modPart);
 
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
         scene = FXMLLoader.load(getClass().getResource("/view/modifypart.fxml"));
         stage.setScene(new Scene(scene));
         stage.show();
-
     }
 
     @FXML
@@ -154,19 +151,33 @@ public class MainPageController implements Initializable {
     @FXML
     void onSearchParts(ActionEvent event) {
 
-            String s = searchPartTxt.getText();
+        String str = searchPartTxt.getText();
+        if (!str.isBlank()) {
+            try {
+                int i = Integer.parseInt(searchPartTxt.getText());
+                Part part = Inventory.lookupPart(i);
+                if(part == null) {
+                    throw new NumberFormatException();
+                }
+                partsTableView.getSelectionModel().select(part);
 
-            ObservableList<Part> parts = Inventory.lookupPart(s);
+            } catch (NumberFormatException e) {
+                ObservableList<Part> list = Inventory.lookupPart(str);
+                if(list.size() == 0) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Part Search");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Can't find part with that info");
 
-            if(parts.size() == 0) {
-                int id = Integer.parseInt(s);
-                Part p = Inventory.lookupPart(id);
-                if(p != null) {
-                    parts.add(p);
+                    alert.showAndWait();
+                    partsTableView.setItems(Inventory.getAllParts());
+                } else {
+                    partsTableView.setItems(list);
                 }
             }
-
-            partsTableView.setItems(parts);
+        } else {
+            partsTableView.setItems(Inventory.getAllParts());
+        }
     }
 
     @FXML
@@ -186,6 +197,15 @@ public class MainPageController implements Initializable {
 
         productsTableView.setItems(products);
 
+    }
+
+    public boolean isInteger(ObservableList<Part> a) {
+        try {
+            Integer.parseInt(String.valueOf(a));
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 
 
