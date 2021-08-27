@@ -166,4 +166,17 @@ public class Inventory {
             throw new NumberFormatException("Inventory must be a number");
         }
     }
+
+    public static int isMinMaxCorrect(int min, int max) {
+        if (min <= max) {
+            return 1;
+        } else throw new NumberFormatException("Min must be less than or equal to Max");
+    }
+
+    public static int isInvCorrect(int inv, int min, int max) {
+        if (inv >= min && inv <= max) {
+            return 1;
+        } else throw new NumberFormatException("Inv must be greater than or equal to Min. Inv must be less than or equal to Max");
+
+    }
 }

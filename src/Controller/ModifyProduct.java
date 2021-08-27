@@ -118,10 +118,18 @@ public class ModifyProduct implements Initializable {
             double price = Inventory.getPrice(modifyProductPriceTxt.getText());
             int min = Inventory.getMin(modifyProductMinTxt.getText());
             int max = Inventory.getMax(modifyProductMaxTxt.getText());
+            Inventory.isMinMaxCorrect(min, max);
+            Inventory.isInvCorrect(inv, min, max);
 
             Product p = new Product(product.getId(),name,price,inv,min,max);
             p.setAssociatedParts(assocParts);
             Inventory.updateProduct(productIndex, p);
+
+            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+
         } catch (NumberFormatException e) {
             Alert alert = new Alert(Alert.AlertType.ERROR);
             alert.setTitle("Error");
@@ -130,11 +138,6 @@ public class ModifyProduct implements Initializable {
 
             alert.showAndWait();
         }
-
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
     }
 
     @FXML
