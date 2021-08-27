@@ -106,13 +106,33 @@ public class MainPageController implements Initializable {
             ObservableList<Part> allParts = Inventory.getAllParts();
             allParts.remove(partsTableView.getSelectionModel().getSelectedItem());
         }
-    }
+
+        if(partsTableView.getSelectionModel().getSelectedItem() == null) {
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Part Delete");
+                alert.setHeaderText(null);
+                alert.setContentText("Please select a part to delete");
+
+                alert.showAndWait();
+            }
+        }
 
     @FXML
     void onActionDeleteProduct(ActionEvent event) {
         if(Inventory.deleteProduct(productsTableView.getSelectionModel().getSelectedItem())) {
             ObservableList<Product> allProducts = Inventory.getAllProducts();
             allProducts.remove(productsTableView.getSelectionModel().getSelectedItem());
+        }
+
+        if(productsTableView.getSelectionModel().getSelectedItem() == null) {
+
+            Alert alert = new Alert(Alert.AlertType.INFORMATION);
+            alert.setTitle("Product Delete");
+            alert.setHeaderText(null);
+            alert.setContentText("Please select a product to delete");
+
+            alert.showAndWait();
         }
     }
 
@@ -183,20 +203,33 @@ public class MainPageController implements Initializable {
     @FXML
     void onSearchProducts(ActionEvent event) {
 
-        String s = searchProductTxt.getText();
+        String str = searchProductTxt.getText();
+        if (!str.isBlank()) {
+            try {
+                int i = Integer.parseInt(searchProductTxt.getText());
+                Product product = Inventory.lookupProduct(i);
+                if(product == null) {
+                    throw new NumberFormatException();
+                }
+                productsTableView.getSelectionModel().select(product);
 
-        ObservableList<Product> products = Inventory.lookupProduct(s);
+            } catch (NumberFormatException e) {
+                ObservableList<Product> list = Inventory.lookupProduct(str);
+                if(list.size() == 0) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Product Search");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Can't find product with that info");
 
-        if(products.size() == 0) {
-            int id = Integer.parseInt(s);
-            Product p = Inventory.lookupProduct(id);
-            if(p != null) {
-                products.add(p);
+                    alert.showAndWait();
+                    productsTableView.setItems(Inventory.getAllProducts());
+                } else {
+                    productsTableView.setItems(list);
+                }
             }
+        } else {
+            productsTableView.setItems(Inventory.getAllProducts());
         }
-
-        productsTableView.setItems(products);
-
     }
 
     public boolean isInteger(ObservableList<Part> a) {

@@ -87,19 +87,33 @@ public class AddProduct implements Initializable {
     @FXML
     void onSearchParts(ActionEvent event) {
 
-        String s = addProductSearchTxt.getText();
+        String str = addProductSearchTxt.getText();
+        if (!str.isBlank()) {
+            try {
+                int i = Integer.parseInt(addProductSearchTxt.getText());
+                Part part = Inventory.lookupPart(i);
+                if(part == null) {
+                    throw new NumberFormatException();
+                }
+                addProductAddTableView.getSelectionModel().select(part);
 
-        ObservableList<Part> parts = Inventory.lookupPart(s);
+            } catch (NumberFormatException e) {
+                ObservableList<Part> list = Inventory.lookupPart(str);
+                if(list.size() == 0) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Part Search");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Can't find part with that info");
 
-        if(parts.size() == 0) {
-            int id = Integer.parseInt(s);
-            Part p = Inventory.lookupPart(id);
-            if(p != null) {
-                parts.add(p);
+                    alert.showAndWait();
+                    addProductAddTableView.setItems(Inventory.getAllParts());
+                } else {
+                    addProductAddTableView.setItems(list);
+                }
             }
+        } else {
+            addProductAddTableView.setItems(Inventory.getAllParts());
         }
-
-        addProductAddTableView.setItems(parts);
 
     }
 

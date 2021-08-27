@@ -86,7 +86,6 @@ public class ModifyProduct implements Initializable {
     void onActionAddPart(ActionEvent event) {
 
         Part p = modProductAddTableView.getSelectionModel().getSelectedItem();
-//        Product product = Inventory.getAllProducts().get(productIndex);
         assocParts.add(p);
     }
 
@@ -107,7 +106,6 @@ public class ModifyProduct implements Initializable {
     void onActionRemovePart(ActionEvent event) {
 
         Part delPart = modProductRemoveTableView.getSelectionModel().getSelectedItem();
-        Product product = Inventory.getAllProducts().get(productIndex);
         assocParts.remove(delPart);
     }
 
@@ -116,10 +114,10 @@ public class ModifyProduct implements Initializable {
 
         try {
             String name = modifyProductNameTxt.getText();
-            int inv = Integer.parseInt(modifyProductInvTxt.getText());
+            int inv = Inventory.getInv(modifyProductInvTxt.getText());
             double price = Inventory.getPrice(modifyProductPriceTxt.getText());
-            int min = Integer.parseInt(modifyProductMinTxt.getText());
-            int max = Integer.parseInt(modifyProductMaxTxt.getText());
+            int min = Inventory.getMin(modifyProductMinTxt.getText());
+            int max = Inventory.getMax(modifyProductMaxTxt.getText());
 
             Product p = new Product(product.getId(),name,price,inv,min,max);
             p.setAssociatedParts(assocParts);
@@ -142,19 +140,33 @@ public class ModifyProduct implements Initializable {
     @FXML
     void onSearchParts(ActionEvent event) {
 
-        String s = modifyProductSearchTxt.getText();
+        String str = modifyProductSearchTxt.getText();
+        if (!str.isBlank()) {
+            try {
+                int i = Integer.parseInt(modifyProductSearchTxt.getText());
+                Part part = Inventory.lookupPart(i);
+                if(part == null) {
+                    throw new NumberFormatException();
+                }
+                modProductAddTableView.getSelectionModel().select(part);
 
-        ObservableList<Part> parts = Inventory.lookupPart(s);
+            } catch (NumberFormatException e) {
+                ObservableList<Part> list = Inventory.lookupPart(str);
+                if(list.size() == 0) {
+                    Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                    alert.setTitle("Part Search");
+                    alert.setHeaderText(null);
+                    alert.setContentText("Can't find part with that info");
 
-        if(parts.size() == 0) {
-            int id = Integer.parseInt(s);
-            Part p = Inventory.lookupPart(id);
-            if(p != null) {
-                parts.add(p);
+                    alert.showAndWait();
+                    modProductAddTableView.setItems(Inventory.getAllParts());
+                } else {
+                    modProductAddTableView.setItems(list);
+                }
             }
+        } else {
+            modProductAddTableView.setItems(Inventory.getAllParts());
         }
-
-        modProductAddTableView.setItems(parts);
 
     }
 

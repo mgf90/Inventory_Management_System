@@ -142,4 +142,28 @@ public class Inventory {
             throw new NumberFormatException("Price must be a decimal value");
         }
     }
+
+    public static int getInv(String value) throws NumberFormatException {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Inventory must be a number");
+        }
+    }
+
+    public static int getMin(String value) throws NumberFormatException {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Min must be a number");
+        }
+    }
+
+    public static int getMax(String value) throws NumberFormatException {
+        try {
+            return Integer.parseInt(value);
+        } catch (NumberFormatException e) {
+            throw new NumberFormatException("Inventory must be a number");
+        }
+    }
 }
