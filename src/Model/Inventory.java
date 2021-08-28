@@ -95,14 +95,14 @@ public class Inventory {
         return namedProducts;
     }
 
-    /** @param index
+    /** @param index index of selected part
      * @param selectedPart updates the selected part */
 
     public static void updatePart(int index, Part selectedPart) {
         allParts.set(index, selectedPart);
     }
 
-    /** @param index
+    /** @param index index of the selected product
      * @param newProduct updates the selected product */
 
     public static void updateProduct(int index, Product newProduct) {
@@ -167,7 +167,7 @@ public class Inventory {
         }
     }
 
-    /** @param min
+    /** @param min minimum value
      *  @param max validates min is less than or equal to max
      *  @return confirmation */
 
@@ -177,8 +177,8 @@ public class Inventory {
         } else throw new NumberFormatException("Min must be less than or equal to Max");
     }
 
-    /** @param min
-     *  @param max
+    /** @param min minimum value
+     *  @param max maximum value
      *  @param inv validates inventory level is between min and max
      *  @return confirmation */
 

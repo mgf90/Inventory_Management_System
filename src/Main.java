@@ -5,7 +5,8 @@ import javafx.scene.Parent;
 import javafx.scene.Scene;
 import javafx.stage.Stage;
 
-/** This class creates an app that manages product inventory. */
+/** This class creates an app that manages product inventory.
+ * JavaDoc is found in JavaDoc folder*/
 
 public class Main extends Application {
 
@@ -19,7 +20,8 @@ public class Main extends Application {
         primaryStage.show();
     }
 
-    /** This is the main method. This is the first method to be called when program is run. */
+    /** This is the main method. This is the first method to be called when program is run.
+     * @param args */
 
     public static void main(String[] args) {
 
