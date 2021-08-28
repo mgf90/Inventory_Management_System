@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class ModifyProduct implements Initializable {
@@ -89,6 +90,8 @@ public class ModifyProduct implements Initializable {
         assocParts.add(p);
     }
 
+    /** cancels changes and returns to the main screen */
+
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
 
@@ -102,12 +105,24 @@ public class ModifyProduct implements Initializable {
 
     }
 
+    /** Removes associated part */
+
     @FXML
     void onActionRemovePart(ActionEvent event) {
 
-        Part delPart = modProductRemoveTableView.getSelectionModel().getSelectedItem();
-        assocParts.remove(delPart);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to remove associated part?");
+
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            Part delPart = modProductRemoveTableView.getSelectionModel().getSelectedItem();
+            assocParts.remove(delPart);
+        }
     }
+
+    /** Saves changes made to product */
 
     @FXML
     void onActionSavePart(ActionEvent event) throws IOException {
@@ -139,6 +154,8 @@ public class ModifyProduct implements Initializable {
             alert.showAndWait();
         }
     }
+
+    /** Searches part table for particular part */
 
     @FXML
     void onSearchParts(ActionEvent event) {
@@ -173,6 +190,8 @@ public class ModifyProduct implements Initializable {
 
     }
 
+    /** Sets the screen up with selected product's data */
+
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
 
@@ -203,6 +222,8 @@ public class ModifyProduct implements Initializable {
         updateModProductRemoveTableView();
 
     }
+
+    /** updates the bottom table with associated parts */
 
     public void updateModProductRemoveTableView() {
         modProductRemoveTableView.setItems(assocParts);

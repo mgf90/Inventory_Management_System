@@ -128,6 +128,8 @@ public class Product {
         return associatedParts;
     }
 
+    /** @param list sets associated parts */
+
     public void setAssociatedParts(ObservableList<Part> list) {
         associatedParts.setAll(list);
     }

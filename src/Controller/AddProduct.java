@@ -17,6 +17,7 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
+import java.util.Optional;
 import java.util.ResourceBundle;
 
 public class AddProduct implements Initializable {
@@ -143,9 +144,16 @@ public class AddProduct implements Initializable {
     @FXML
     void onActionRemovePart(ActionEvent event) {
 
-        Part delPart = addProductRemoveTableView.getSelectionModel().getSelectedItem();
-        assocParts.remove(delPart);
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to remove associated part?");
 
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            Part delPart = addProductRemoveTableView.getSelectionModel().getSelectedItem();
+            assocParts.remove(delPart);
+        }
     }
 
     /** saves product and returns to the main menu */
@@ -190,6 +198,7 @@ public class AddProduct implements Initializable {
 
     }
 
+    /** Sets the screen up with initial data */
 
     public void initialize(URL url, ResourceBundle rb) {
         /** RUNTIME ERROR non-static method Product.getAllAssociatedParts() cannot be referenced from a static context,
@@ -212,5 +221,4 @@ public class AddProduct implements Initializable {
         removePriceCol.setCellValueFactory(new PropertyValueFactory<>("price"));
 
     }
-
 }

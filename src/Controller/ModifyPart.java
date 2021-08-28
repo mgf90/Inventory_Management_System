@@ -12,7 +12,6 @@ import javafx.scene.Scene;
 import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
-
 import java.io.IOException;
 import java.net.URL;
 import java.util.ResourceBundle;
@@ -55,6 +54,7 @@ public class ModifyPart implements Initializable {
     private Label changeText;
 
     /** goes back to the main menu without saving */
+
     @FXML
     void onActionCancel(ActionEvent event) throws IOException {
 
@@ -64,6 +64,8 @@ public class ModifyPart implements Initializable {
         stage.show();
 
     }
+
+    /** Saves changes made to the part */
 
     @FXML
     void onActionSavePart(ActionEvent event) throws IOException {
@@ -105,15 +107,21 @@ public class ModifyPart implements Initializable {
         }
     }
 
+    /** changes the last text field if In House is selected */
+
     @FXML
     void onInHouse(ActionEvent event) {
         changeText.setText("Machine ID");
     }
 
+    /** changes the last text field if Outsourced is selected */
+
     @FXML
     void onOutsourced(ActionEvent event) {
         changeText.setText("Company Name");
     }
+
+    /** Sets the screen up with selected part's data */
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
@@ -137,6 +145,4 @@ public class ModifyPart implements Initializable {
             changeText.setText("Company Name");
         }
     }
-
-
 }

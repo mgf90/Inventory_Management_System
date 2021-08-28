@@ -1,12 +1,7 @@
 package Model;
 
-import Controller.MainPageController;
-import com.sun.tools.javac.Main;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
-import javafx.scene.control.Alert;
-
-import java.util.Locale;
 
 public class Inventory {
 
@@ -79,13 +74,6 @@ public class Inventory {
                 namedParts.add(p);
             }
         }
-
-//        if(namedParts.size() == 0) {
-//            return notFound;
-//        } else {
-//            return namedParts;
-//        }
-
         return namedParts;
     }
 
@@ -135,6 +123,9 @@ public class Inventory {
         return true;
     }
 
+    /** @param value validates the price
+     *  @return the correct value*/
+
     public static double getPrice(String value) throws NumberFormatException {
         try {
             return Double.parseDouble(value);
@@ -142,6 +133,9 @@ public class Inventory {
             throw new NumberFormatException("Price must be a decimal value");
         }
     }
+
+    /** @param value validates the inventory
+     *  @return the correct value*/
 
     public static int getInv(String value) throws NumberFormatException {
         try {
@@ -151,6 +145,9 @@ public class Inventory {
         }
     }
 
+    /** @param value validates the min value
+     *  @return the correct value*/
+
     public static int getMin(String value) throws NumberFormatException {
         try {
             return Integer.parseInt(value);
@@ -158,6 +155,9 @@ public class Inventory {
             throw new NumberFormatException("Min must be a number");
         }
     }
+
+    /** @param value validates the max value
+     *  @return the correct value*/
 
     public static int getMax(String value) throws NumberFormatException {
         try {
@@ -167,11 +167,20 @@ public class Inventory {
         }
     }
 
+    /** @param min
+     *  @param max validates min is less than or equal to max
+     *  @return confirmation */
+
     public static int isMinMaxCorrect(int min, int max) {
         if (min <= max) {
             return 1;
         } else throw new NumberFormatException("Min must be less than or equal to Max");
     }
+
+    /** @param min
+     *  @param max
+     *  @param inv validates inventory level is between min and max
+     *  @return confirmation */
 
     public static int isInvCorrect(int inv, int min, int max) {
         if (inv >= min && inv <= max) {

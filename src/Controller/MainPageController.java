@@ -3,7 +3,6 @@ package Controller;
 import Model.Inventory;
 import Model.Part;
 import Model.Product;
-import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
@@ -17,8 +16,10 @@ import javafx.stage.Stage;
 
 import java.io.IOException;
 import java.net.URL;
-import java.util.Locale;
+import java.util.Optional;
 import java.util.ResourceBundle;
+
+/** The main page of the app */
 
 public class MainPageController implements Initializable {
     /** RUNTIME ERROR added "implements Initializable" to class declaration to enable app to run */
@@ -73,13 +74,19 @@ public class MainPageController implements Initializable {
     private static Product modProduct;
     private static int modProductIndex;
 
+    /** @return modPartIndex */
+
     public static int partModIndex() {
         return modPartIndex;
     }
 
+    /** @return modProductIndex */
+
     public static int productModIndex() {
         return modProductIndex;
     }
+
+    /** Goes to the Add Part screen */
 
     @FXML
     void onActionAddPart(ActionEvent event) throws IOException {
@@ -89,6 +96,8 @@ public class MainPageController implements Initializable {
         stage.setScene(new Scene(scene));
         stage.show();
     }
+
+    /** Goes to the Add Product screen */
 
     @FXML
     void onActionAddProduct(ActionEvent event) throws IOException {
@@ -100,54 +109,78 @@ public class MainPageController implements Initializable {
 
     }
 
+    /** Deletes part from the table */
+
     @FXML
     void onActionDeletePart(ActionEvent event) {
-        if(Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem())) {
-            ObservableList<Part> allParts = Inventory.getAllParts();
-            allParts.remove(partsTableView.getSelectionModel().getSelectedItem());
-        }
 
-        if(partsTableView.getSelectionModel().getSelectedItem() == null) {
+        Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+        alert.setTitle("Confirm");
+        alert.setHeaderText(null);
+        alert.setContentText("Are you sure you want to delete this part?");
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Part Delete");
-                alert.setHeaderText(null);
-                alert.setContentText("Please select a part to delete");
+        Optional<ButtonType> result = alert.showAndWait();
+        if (result.get() == ButtonType.OK){
+            if(Inventory.deletePart(partsTableView.getSelectionModel().getSelectedItem())) {
+                ObservableList<Part> allParts = Inventory.getAllParts();
+                allParts.remove(partsTableView.getSelectionModel().getSelectedItem());
+            }
 
-                alert.showAndWait();
+            if(partsTableView.getSelectionModel().getSelectedItem() == null) {
+
+                Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                alert2.setTitle("Part Delete");
+                alert2.setHeaderText(null);
+                alert2.setContentText("Please select a part to delete");
+
+                alert2.showAndWait();
             }
         }
+    }
+
+    /** Deletes product from the table */
 
     @FXML
     void onActionDeleteProduct(ActionEvent event) {
 
-        try {
-            Product product = productsTableView.getSelectionModel().getSelectedItem();
+        if(productsTableView.getSelectionModel().getSelectedItem() == null) {
+            Alert alert3 = new Alert(Alert.AlertType.INFORMATION);
+            alert3.setTitle("Product Delete");
+            alert3.setHeaderText(null);
+            alert3.setContentText("Please select a product to delete");
 
-            if (product.getAllAssociatedParts().size() > 0) {
+            alert3.showAndWait();
+            return;
+        }
 
-                Alert alert = new Alert(Alert.AlertType.INFORMATION);
-                alert.setTitle("Product Delete");
-                alert.setHeaderText(null);
-                alert.setContentText("Can't delete a product with associated parts");
+            Alert alert = new Alert(Alert.AlertType.CONFIRMATION);
+            alert.setTitle("Confirm");
+            alert.setHeaderText(null);
+            alert.setContentText("Are you sure you want to delete this product?");
 
-                alert.showAndWait();
+            Optional<ButtonType> result = alert.showAndWait();
+            if (result.get() == ButtonType.OK){
+                Product product = productsTableView.getSelectionModel().getSelectedItem();
 
-            } else {
-                if(Inventory.deleteProduct(product)) {
-                    ObservableList<Product> allProducts = Inventory.getAllProducts();
-                    allProducts.remove(product);
+                if (product.getAllAssociatedParts().size() > 0) {
+
+                    Alert alert2 = new Alert(Alert.AlertType.INFORMATION);
+                    alert2.setTitle("Product Delete");
+                    alert2.setHeaderText(null);
+                    alert2.setContentText("Can't delete a product with associated parts");
+
+                    alert2.showAndWait();
+
+                } else {
+                    if(Inventory.deleteProduct(product)) {
+                        ObservableList<Product> allProducts = Inventory.getAllProducts();
+                        allProducts.remove(product);
+                    }
                 }
             }
-        } catch (NullPointerException e) {
-            Alert alert = new Alert(Alert.AlertType.INFORMATION);
-            alert.setTitle("Product Delete");
-            alert.setHeaderText(null);
-            alert.setContentText("Please select a product to delete");
-
-            alert.showAndWait();
-        }
     }
+
+    /** Exits the program */
 
     @FXML
     void onActionExit(ActionEvent event) {
@@ -155,17 +188,21 @@ public class MainPageController implements Initializable {
         System.exit(0);
     }
 
+    /** Goes to the Modify Part screen */
+
     @FXML
     void onActionModifyPart(ActionEvent event) throws IOException {
 
-        modPart = partsTableView.getSelectionModel().getSelectedItem();
-        modPartIndex = Inventory.getAllParts().indexOf(modPart);
+            modPart = partsTableView.getSelectionModel().getSelectedItem();
+            modPartIndex = Inventory.getAllParts().indexOf(modPart);
 
-        stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/modifypart.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
+            stage = (Stage) ((Button) event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/modifypart.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
     }
+
+    /** goes to the Modify Product screen */
 
     @FXML
     void onActionModifyProduct(ActionEvent event) throws IOException {
@@ -180,6 +217,8 @@ public class MainPageController implements Initializable {
         stage.show();
 
     }
+
+    /** searches the Parts table for a particular part */
 
     @FXML
     void onSearchParts(ActionEvent event) {
@@ -213,6 +252,8 @@ public class MainPageController implements Initializable {
         }
     }
 
+    /** searches the Products table for a specific product */
+
     @FXML
     void onSearchProducts(ActionEvent event) {
 
@@ -245,15 +286,7 @@ public class MainPageController implements Initializable {
         }
     }
 
-    public boolean isInteger(ObservableList<Part> a) {
-        try {
-            Integer.parseInt(String.valueOf(a));
-            return true;
-        } catch (Exception e) {
-            return false;
-        }
-    }
-
+    /** Sets the app up with initial data */
 
     @Override
     public void initialize(URL url, ResourceBundle resourceBundle) {
