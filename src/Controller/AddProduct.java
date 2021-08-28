@@ -1,6 +1,5 @@
 package Controller;
 
-import Model.InHouse;
 import Model.Inventory;
 import Model.Part;
 import Model.Product;
@@ -154,29 +153,40 @@ public class AddProduct implements Initializable {
     @FXML
     void onActionSaveProduct(ActionEvent event) throws IOException {
 
-        int id = Product.getProductID();
-        String name = addProductNameTxt.getText();
-        double price = Double.parseDouble(addProductPriceTxt.getText());
-        int inv = Integer.parseInt(addProductInvTxt.getText());
-        int min = Integer.parseInt(addProductMinTxt.getText());
-        int max = Integer.parseInt(addProductMaxTxt.getText());
+        try {
+            int id = Product.getProductID();
+            String name = addProductNameTxt.getText();
+            int inv = Inventory.getInv(addProductInvTxt.getText());
+            double price = Inventory.getPrice(addProductPriceTxt.getText());
+            int min = Inventory.getMin(addProductMinTxt.getText());
+            int max = Inventory.getMax(addProductMaxTxt.getText());
+            Inventory.isMinMaxCorrect(min, max);
+            Inventory.isInvCorrect(inv, min, max);
 
-        product.setId(id);
-        product.setName(name);
-        product.setPrice(price);
-        product.setStock(inv);
-        product.setMin(min);
-        product.setMax(max);
-        Inventory.addProduct(product);
-        for(Part p : assocParts) {
-            product.addAssociatedPart(p);
+            product.setId(id);
+            product.setName(name);
+            product.setPrice(price);
+            product.setStock(inv);
+            product.setMin(min);
+            product.setMax(max);
+            Inventory.addProduct(product);
+            for(Part p : assocParts) {
+                product.addAssociatedPart(p);
+            }
+
+            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+
+            alert.showAndWait();
         }
-
-
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
 
     }
 

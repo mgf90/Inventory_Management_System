@@ -9,10 +9,7 @@ import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
 import javafx.scene.Parent;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.RadioButton;
-import javafx.scene.control.TextField;
+import javafx.scene.control.*;
 import javafx.event.ActionEvent;
 import javafx.stage.Stage;
 
@@ -71,40 +68,41 @@ public class ModifyPart implements Initializable {
     @FXML
     void onActionSavePart(ActionEvent event) throws IOException {
 
-        String name = modifyPartNameTxt.getText();
-        int inv = Integer.parseInt(modifyPartInvTxt.getText());
-        double price = Double.parseDouble(modifyPartPriceTxt.getText());
-        int min = Integer.parseInt(modifyPartMinTxt.getText());
-        int max = Integer.parseInt(modifyPartMaxTxt.getText());
-        String machineID = modifyPartMachineIDTxt.getText();
+        try {
+            String name = modifyPartNameTxt.getText();
+            int inv = Inventory.getInv(modifyPartInvTxt.getText());
+            double price = Inventory.getPrice(modifyPartPriceTxt.getText());
+            int min = Inventory.getMin(modifyPartMinTxt.getText());
+            int max = Inventory.getMax(modifyPartMaxTxt.getText());
+            String machineID = modifyPartMachineIDTxt.getText();
+            Inventory.isMinMaxCorrect(min, max);
+            Inventory.isInvCorrect(inv, min, max);
 
-        if(modifyPartOutsourcedRBtn.isSelected() == true) {
-            Outsourced op = new Outsourced(0,null,0,0,0,100,null);
-            op.setId(partID);
-            op.setName(name);
-            op.setStock(inv);
-            op.setPrice(price);
-            op.setMin(min);
-            op.setMax(max);
-            op.setCompanyName(machineID);
-            Inventory.updatePart(partIndex, op);
-        } else {
-            InHouse ih = new InHouse(0,null,0,0,0,100,0);
-            ih.setId(partID);
-            ih.setName(name);
-            ih.setStock(inv);
-            ih.setPrice(price);
-            ih.setMin(min);
-            ih.setMax(max);
-            ih.setMachineID(Integer.parseInt(machineID));
-            Inventory.updatePart(partIndex, ih);
+            if(modifyPartOutsourcedRBtn.isSelected() == true) {
+                Outsourced op = new Outsourced(0, name, price, inv, min, max,null);
+                op.setId(partID);
+                op.setCompanyName(machineID);
+                Inventory.updatePart(partIndex, op);
+            } else {
+                InHouse ih = new InHouse(0,name,price,inv,min,max,0);
+                ih.setId(partID);
+                ih.setMachineID(Integer.parseInt(machineID));
+                Inventory.updatePart(partIndex, ih);
+            }
+
+            stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
+            scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
+            stage.setScene(new Scene(scene));
+            stage.show();
+
+        } catch (NumberFormatException e) {
+            Alert alert = new Alert(Alert.AlertType.ERROR);
+            alert.setTitle("Error");
+            alert.setHeaderText(null);
+            alert.setContentText(e.getMessage());
+
+            alert.showAndWait();
         }
-
-
-        stage = (Stage) ((Button)event.getSource()).getScene().getWindow();
-        scene = FXMLLoader.load(getClass().getResource("/view/mainpage.fxml"));
-        stage.setScene(new Scene(scene));
-        stage.show();
     }
 
     @FXML

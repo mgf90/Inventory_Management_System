@@ -3,7 +3,6 @@ package Controller;
 import Model.InHouse;
 import Model.Inventory;
 import Model.Outsourced;
-import Model.Part;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Parent;
@@ -72,10 +71,10 @@ public class AddPart {
 
                 int id = InHouse.getPartID();
                 String name = addPartNameTxt.getText();
-                int inv = Integer.parseInt(addPartInvTxt.getText());
-                double price = Double.parseDouble(addPartPriceTxt.getText());
-                int max = Integer.parseInt(addPartMaxTxt.getText());
-                int min = Integer.parseInt(addPartMinTxt.getText());
+                int inv = Inventory.getInv(addPartInvTxt.getText());
+                double price = Inventory.getPrice(addPartPriceTxt.getText());
+                int min = Inventory.getMin(addPartMinTxt.getText());
+                int max = Inventory.getMax(addPartMaxTxt.getText());
                 int machineID = Integer.parseInt(AddPartMachineIDTxt.getText());
 
                 Inventory.addPart(new InHouse(id, name, price, inv, min, max, machineID));
@@ -90,10 +89,10 @@ public class AddPart {
             if (!isInHouse) {
                 int id = InHouse.getPartID();
                 String name = addPartNameTxt.getText();
-                int inv = Integer.parseInt(addPartInvTxt.getText());
-                double price = Double.parseDouble(addPartPriceTxt.getText());
-                int max = Integer.parseInt(addPartMaxTxt.getText());
-                int min = Integer.parseInt(addPartMinTxt.getText());
+                int inv = Inventory.getInv(addPartInvTxt.getText());
+                double price = Inventory.getPrice(addPartPriceTxt.getText());
+                int min = Inventory.getMin(addPartMinTxt.getText());
+                int max = Inventory.getMax(addPartMaxTxt.getText());
                 String companyName = AddPartMachineIDTxt.getText();
 
                 Inventory.addPart(new Outsourced(id, name, price, inv, min, max, companyName));

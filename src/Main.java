@@ -9,6 +9,8 @@ import javafx.stage.Stage;
 
 public class Main extends Application {
 
+    /** FUTURE ENHANCEMENT - Combine the logical error and input validation checks into a single method in the Inventory class*/
+
     @Override
     public void start(Stage primaryStage) throws Exception{
         Parent root = FXMLLoader.load(getClass().getResource("/View/mainpage.fxml"));

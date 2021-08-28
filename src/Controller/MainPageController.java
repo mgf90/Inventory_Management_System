@@ -120,13 +120,26 @@ public class MainPageController implements Initializable {
 
     @FXML
     void onActionDeleteProduct(ActionEvent event) {
-        if(Inventory.deleteProduct(productsTableView.getSelectionModel().getSelectedItem())) {
-            ObservableList<Product> allProducts = Inventory.getAllProducts();
-            allProducts.remove(productsTableView.getSelectionModel().getSelectedItem());
-        }
 
-        if(productsTableView.getSelectionModel().getSelectedItem() == null) {
+        try {
+            Product product = productsTableView.getSelectionModel().getSelectedItem();
 
+            if (product.getAllAssociatedParts().size() > 0) {
+
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Product Delete");
+                alert.setHeaderText(null);
+                alert.setContentText("Can't delete a product with associated parts");
+
+                alert.showAndWait();
+
+            } else {
+                if(Inventory.deleteProduct(product)) {
+                    ObservableList<Product> allProducts = Inventory.getAllProducts();
+                    allProducts.remove(product);
+                }
+            }
+        } catch (NullPointerException e) {
             Alert alert = new Alert(Alert.AlertType.INFORMATION);
             alert.setTitle("Product Delete");
             alert.setHeaderText(null);
